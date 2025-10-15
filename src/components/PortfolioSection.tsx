@@ -14,7 +14,6 @@ interface ProjectItem {
 
 export default function PortfolioSection() {
   const [selectedImage, setSelectedImage] = useState<ProjectItem | null>(null);
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const { ref, controls } = useScrollAnimation();
 
   const projects: ProjectItem[] = useMemo(
@@ -80,16 +79,11 @@ export default function PortfolioSection() {
                 type="button"
                 className="group relative overflow-hidden rounded-xl bg-gray-100 shadow-sm transition-shadow duration-300 cursor-pointer"
                 style={{ gridArea: `img${idx+1}`, willChange: "transform" }}
-                onMouseEnter={() => setHoveredIdx(idx)}
-                onMouseLeave={() => setHoveredIdx(null)}
-                animate={
-                  hoveredIdx === null
-                    ? { scale: 1, zIndex: 1, boxShadow: "0 2px 8px #0001" }
-                    : hoveredIdx === idx
-                      ? { scale: 1.05, zIndex: 10, boxShadow: "0 8px 32px #0002" }
-                      : { scale: 0.95, zIndex: 1, boxShadow: "0 1px 4px #0001" }
-                }
-                transition={{ type: "spring", stiffness: 320, damping: 28 }}
+                whileHover={{ 
+                  scale: 1.03,
+                  boxShadow: "0 8px 32px #0002",
+                  transition: { type: "spring", stiffness: 320, damping: 28 }
+                }}
               >
                 <Image src={projects[idx].image} alt={projects[idx].title} fill className="object-cover" loading="lazy" />
               </motion.button>
