@@ -7,7 +7,7 @@ import { useSmoothScroll } from "@/hooks/useSmoothScroll";
 
 interface Slide {
   id: number;
-  image: string;
+  video: string;
   title: string;
   subtitle?: string;
   ctaLabel?: string;
@@ -17,7 +17,7 @@ interface Slide {
 const SLIDES: Slide[] = [
   {
     id: 1,
-    image: "/images/imgi_18_006 Casa Área Externa_edited.png",
+    video: "/films/3773486-hd_1920_1080_30fps.mp4",
     title: "Arquitetura que vive com você",
     subtitle: "Projetos pensados para acolher, inspirar e durar.",
     ctaLabel: "Ver Projetos",
@@ -25,7 +25,7 @@ const SLIDES: Slide[] = [
   },
   {
     id: 2,
-    image: "/images/imgi_15_QUARTO 2_edited.png",
+    video: "/films/7578541-uhd_3840_2160_30fps.mp4",
     title: "Interiores com identidade",
     subtitle: "Cada espaço traduz a sua forma de viver.",
     ctaLabel: "Contactar",
@@ -33,7 +33,7 @@ const SLIDES: Slide[] = [
   },
   {
     id: 3,
-    image: "/images/imgi_19_009 Casa Área Externa_edited_edited.png",
+    video: "/films/7578550-uhd_3840_2160_30fps.mp4",
     title: "Funcionalidade e harmonia",
     subtitle: "Equilíbrio entre estética, conforto e propósito.",
     ctaLabel: "Sobre mim",
@@ -77,15 +77,15 @@ export default function HeroSlider() {
                 exit={{ opacity: 0, scale: 0.98 }}
                 transition={{ duration: 1.1, ease: "easeInOut" }}
               >
-                <Image
-                  src={slide.image}
-                  alt={slide.title}
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="100vw"
+                <video
+                  src={slide.video}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="object-cover w-full h-full absolute inset-0"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/0" />
+                <div className="absolute inset-0 bg-black/40" />
               </motion.div>
             ) : null
           )}
@@ -96,25 +96,31 @@ export default function HeroSlider() {
       <div className="relative z-10 h-full flex items-center">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl text-white select-none">
-            <motion.h1
-              key={SLIDES[index].title}
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-4xl md:text-6xl font-semibold tracking-tight mb-6"
-            >
-              {SLIDES[index].title}
-            </motion.h1>
-            {SLIDES[index].subtitle && (
-              <motion.p
-                key={SLIDES[index].subtitle}
-                initial={{ opacity: 0, y: 20 }}
+            <AnimatePresence mode="wait">
+              <motion.h1
+                key={SLIDES[index].title}
+                initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: "easeOut", delay: 0.05 }}
-                className="text-lg md:text-2xl text-gray-200 mb-8 leading-relaxed"
+                exit={{ opacity: 0, y: -30 }}
+                transition={{ duration: 1.1, ease: "easeInOut" }}
+                className="text-4xl md:text-6xl font-semibold tracking-tight mb-6"
               >
-                {SLIDES[index].subtitle}
-              </motion.p>
+                {SLIDES[index].title}
+              </motion.h1>
+            </AnimatePresence>
+            {SLIDES[index].subtitle && (
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={SLIDES[index].subtitle}
+                  initial={{ opacity: 0, y: -30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -30 }}
+                  transition={{ duration: 1.1, ease: "easeInOut" }}
+                  className="text-lg md:text-2xl text-gray-200 mb-8 leading-relaxed"
+                >
+                  {SLIDES[index].subtitle}
+                </motion.p>
+              </AnimatePresence>
             )}
             {SLIDES[index].ctaLabel && SLIDES[index].ctaAction && (
               <AnimatePresence mode="wait">
@@ -129,7 +135,7 @@ export default function HeroSlider() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 25 }}
                   transition={{ duration: 1.1, ease: "easeInOut" }}
-                  className="inline-flex items-center px-6 py-3 rounded-full bg-white/90 text-gray-900 font-medium text-sm md:text-base hover:bg-white transition-colors shadow-sm cursor-pointer"
+                  className="inline-flex items-center px-6 py-3 rounded-full bg-white/60 text-gray-900 font-medium text-sm md:text-base hover:bg-white transition-colors shadow-sm cursor-pointer"
                 >
                   {SLIDES[index].ctaLabel}
                 </motion.button>

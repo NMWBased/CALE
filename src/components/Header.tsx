@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home, User, Hammer, Image as ImageIcon, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -22,11 +22,11 @@ export default function Header() {
   }, []);
 
   const navItems = [
-    { href: "inicio", label: "Início" },
-    { href: "sobre", label: "Sobre" },
-    { href: "servicos", label: "Serviços" },
-    { href: "portfolio", label: "Portfólio" },
-    { href: "contacto", label: "Contacto" },
+  { href: "inicio", label: "Início", icon: Home },
+  { href: "sobre", label: "Sobre", icon: User },
+  { href: "servicos", label: "Serviços", icon: Hammer },
+  { href: "portfolio", label: "Portfólio", icon: ImageIcon },
+  { href: "contacto", label: "Contacto", icon: Mail },
   ];
 
   const handleNavClick = (sectionId: string) => {
@@ -40,7 +40,7 @@ export default function Header() {
         isScrolled ? "bg-white/95 backdrop-blur-md shadow" : "bg-white/70 backdrop-blur"
       }`}
     >
-      <nav className="container mx-auto px-4 py-2">
+  <nav className="container mx-auto px-4 py-0">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div>
@@ -48,9 +48,9 @@ export default function Header() {
               <Image
                 src="/images/imgi_14_CAROL_CALE-03.png"
                 alt="CALE Arquitetura"
-                width={96}
-                height={96}
-                className="w-20 h-20 md:w-24 md:h-24 object-contain transition-transform duration-300 group-hover:scale-105"
+                width={112}
+                height={112}
+                className="w-24 h-24 md:w-28 md:h-28 object-contain transition-transform duration-300 group-hover:scale-105"
                 priority
               />
             </Link>
@@ -126,23 +126,24 @@ export default function Header() {
                 initial="hidden"
                 animate="visible"
               >
-                {navItems.map((item) => (
-                  <motion.div
-                    key={item.href}
-                    variants={{
-                      hidden: { opacity: 0, x: -20 },
-                      visible: { opacity: 1, x: 0 },
-                    }}
-                  >
-                    <button
+                {navItems.map((item) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <motion.button
+                      key={item.href}
                       type="button"
                       onClick={() => handleNavClick(item.href)}
-                      className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium py-2 block w-full text-left"
+                      variants={{
+                        hidden: { opacity: 0, x: -20 },
+                        visible: { opacity: 1, x: 0 },
+                      }}
+                      className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium py-2 w-full text-left flex items-center gap-2"
                     >
+                      <IconComponent size={22} className="text-amber-600" />
                       {item.label}
-                    </button>
-                  </motion.div>
-                ))}
+                    </motion.button>
+                  );
+                })}
               </motion.div>
             </motion.div>
           )}

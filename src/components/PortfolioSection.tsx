@@ -79,11 +79,11 @@ export default function PortfolioSection() {
                 type="button"
                 className="group relative overflow-hidden rounded-xl bg-gray-100 shadow-sm transition-shadow duration-300 cursor-pointer"
                 style={{ gridArea: `img${idx+1}`, willChange: "transform" }}
-                whileHover={{ 
-                  scale: 1.03,
-                  boxShadow: "0 8px 32px #0002",
-                  transition: { type: "spring", stiffness: 320, damping: 28 }
-                }}
+                initial={{ scale: 1, boxShadow: "0 2px 8px #0001", opacity: 1 }}
+                animate={{ scale: 1, boxShadow: "0 2px 8px #0001", opacity: 1 }}
+                whileHover={{ scale: 1.025, boxShadow: "0 8px 24px #0002", opacity: 0.96 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
               >
                 <Image src={projects[idx].image} alt={projects[idx].title} fill className="object-cover" loading="lazy" />
               </motion.button>
