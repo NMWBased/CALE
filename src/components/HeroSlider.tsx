@@ -87,7 +87,7 @@ export default function HeroSlider() {
                   className="object-cover"
                   sizes="100vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/15 to-black/30" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/5 to-black/20" />
               </motion.div>
             ) : null
           )}

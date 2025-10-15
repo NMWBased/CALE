@@ -63,10 +63,10 @@ export default function Header() {
                 key={item.href}
                 type="button"
                 onClick={() => handleNavClick(item.href)}
-                className="relative px-4 py-2 text-base font-semibold text-gray-700 hover:text-amber-700 transition-colors duration-300 cursor-pointer group"
+                className="relative px-4 py-2 text-base font-semibold text-gray-700 hover:text-amber-700 transition-colors duration-500 cursor-pointer group"
               >
                 {item.label}
-                <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-amber-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-amber-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-in-out origin-left"></span>
               </button>
             ))}
           </div>
