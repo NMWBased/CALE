@@ -45,26 +45,24 @@ const AUTO_DELAY = 6500; // ms
 
 export default function HeroSlider() {
   const [index, setIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const { scrollToSection } = useSmoothScroll();
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
-    if (isPaused) return;
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => setIndex((i) => (i + 1) % SLIDES.length), AUTO_DELAY);
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index, isPaused]);
+  }, [index]);
 
-  const goTo = (i: number) => setIndex(i);
+  // Removed goTo (dots navigation) since dots are not shown
 
   return (
     <section
       data-section="inicio"
-      className="relative h-[95vh] min-h-[650px] w-full overflow-hidden bg-black"
+      className="relative h-[100vh] min-h-[750px] w-full overflow-hidden bg-black"
     >
       {/* Slides */}
       <div className="absolute inset-0">
@@ -87,7 +85,7 @@ export default function HeroSlider() {
                   className="object-cover"
                   sizes="100vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/5 to-black/20" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/0 to-black/0" />
               </motion.div>
             ) : null
           )}
@@ -119,40 +117,29 @@ export default function HeroSlider() {
               </motion.p>
             )}
             {SLIDES[index].ctaLabel && SLIDES[index].ctaAction && (
-              <motion.button
-                type="button"
-                onClick={() => {
-                  const action = SLIDES[index].ctaAction;
-                  if (action) scrollToSection(action);
-                }}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0.12 }}
-                className="inline-flex items-center px-6 py-3 rounded-full bg-white/90 text-gray-900 font-medium text-sm md:text-base hover:bg-white transition-colors shadow-sm cursor-pointer"
-              >
-                {SLIDES[index].ctaLabel}
-              </motion.button>
+              <AnimatePresence mode="wait">
+                <motion.button
+                  key={SLIDES[index].ctaLabel + SLIDES[index].ctaAction}
+                  type="button"
+                  onClick={() => {
+                    const action = SLIDES[index].ctaAction;
+                    if (action) scrollToSection(action);
+                  }}
+                  initial={{ opacity: 0, y: 25 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 25 }}
+                  transition={{ duration: 1.1, ease: "easeInOut" }}
+                  className="inline-flex items-center px-6 py-3 rounded-full bg-white/90 text-gray-900 font-medium text-sm md:text-base hover:bg-white transition-colors shadow-sm cursor-pointer"
+                >
+                  {SLIDES[index].ctaLabel}
+                </motion.button>
+              </AnimatePresence>
             )}
           </div>
         </div>
       </div>
 
-      {/* Dots */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2">
-        {SLIDES.map((slide, i) => (
-          <button
-            type="button"
-            key={slide.id}
-            aria-label={`Ir para slide ${i + 1}`}
-            onClick={() => goTo(i)}
-            className={`h-2.5 rounded-full transition-all duration-300 ${
-              i === index ? "bg-white w-8" : "bg-white/50 w-2.5 hover:bg-white/80"
-            }`}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          />
-        ))}
-      </div>
+  {/* Dots removed as requested */}
     </section>
   );
 }
