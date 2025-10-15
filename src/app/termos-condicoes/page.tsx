@@ -24,19 +24,15 @@ export default function TermosCondicoes() {
           <div className="max-w-4xl mx-auto text-center">
             <Link
               href="/"
-              className="inline-flex items-center space-x-3 mb-8 hover:opacity-80 transition-opacity"
+              className="inline-block mb-8 hover:opacity-80 transition-opacity"
             >
               <Image
                 src="/images/imgi_14_CAROL_CALE-03.png"
                 alt="CALE Arquitetura"
-                width={48}
-                height={48}
-                className="w-12 h-12 object-contain drop-shadow-md"
+                width={180}
+                height={180}
+                className="w-44 h-44 object-contain drop-shadow-md mx-auto"
               />
-              <div>
-                <h1 className="text-xl font-bold text-primary-800">CALE</h1>
-                <p className="text-xs text-primary-600 -mt-1">arquitetura</p>
-              </div>
             </Link>
             <h1 className="text-5xl font-bold text-primary-900 mb-4">Termos e Condições</h1>
             <p className="text-xl text-primary-700">Última atualização: 25 de julho de 2025</p>
@@ -235,7 +231,7 @@ export default function TermosCondicoes() {
             <div className="text-center">
               <Link
                 href="/"
-                className="inline-flex items-center px-8 py-3 bg-primary-600 text-white rounded-full hover:bg-primary-700 transition-colors font-medium"
+                className="inline-flex items-center justify-center px-8 py-3 bg-amber-600 text-white rounded-full shadow-lg hover:bg-amber-700 transition-all duration-300 font-semibold text-lg tracking-wide focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
               >
                 Voltar ao Site Principal
               </Link>
