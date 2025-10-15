@@ -1,208 +1,143 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
-import { fadeInUp, staggerContainer, useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useMemo, useState } from "react";
+import { X } from "lucide-react";
+import { fadeInUp, useScrollAnimation } from "@/hooks/useScrollAnimation";
+
+interface ProjectItem {
+  title: string;
+  image: string;
+  category?: string;
+}
 
 export default function PortfolioSection() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<ProjectItem | null>(null);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const { ref, controls } = useScrollAnimation();
 
-  const projects = [
-    {
-      title: "Casa Área Externa",
-      category: "Arquitetura Residencial",
-      image: "/images/imgi_18_006 Casa Área Externa_edited.png",
-      description:
-        "Projeto completo de área externa com integração entre espaços internos e externos.",
-    },
-    {
-      title: "Quarto Moderno",
-      category: "Design de Interiores",
-      image: "/images/imgi_15_QUARTO 2_edited.png",
-      description: "Design de quarto com foco na funcionalidade e conforto.",
-    },
-    {
-      title: "Banheiro Elegante",
-      category: "Design de Interiores",
-      image: "/images/imgi_16_BANHEIRO 1_edited.png",
-      description: "Banheiro moderno com materiais de qualidade e design atemporal.",
-    },
-    {
-      title: "Área de Lazer",
-      category: "Arquitetura Residencial",
-      image: "/images/imgi_19_009 Casa Área Externa_edited_edited.png",
-      description: "Espaço de lazer integrado com paisagismo e funcionalidade.",
-    },
-    {
-      title: "Sala de Estar",
-      category: "Design de Interiores",
-      image: "/images/imgi_17_4 (1).png",
-      description: "Ambiente acolhedor com mobiliário personalizado e iluminação natural.",
-    },
-  ];
+  const projects: ProjectItem[] = useMemo(
+    () => [
+      { title: "Área Externa", image: "/images/imgi_18_006 Casa Área Externa_edited.png" },
+      { title: "Quarto", image: "/images/imgi_15_QUARTO 2_edited.png" },
+      { title: "Banheiro", image: "/images/imgi_16_BANHEIRO 1_edited.png" },
+      { title: "Sala", image: "/images/imgi_17_4 (1).png" },
+      { title: "Área Externa 2", image: "/images/imgi_19_009 Casa Área Externa_edited_edited.png" },
+      { title: "Projeto", image: "/images/imgi_1_6b2f54_8fc2a1086e024f9497780930e0a10365~mv2.png" },
+    ],
+    []
+  );
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-    },
+  const openModal = (project: ProjectItem) => {
+    setSelectedImage(project);
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    document.body.style.overflow = "auto";
   };
 
   return (
     <>
-      <section className="py-20 bg-gray-50" data-section="portfolio" ref={ref}>
+      <section data-section="portfolio" className="py-16 bg-white" ref={ref}>
         <div className="container mx-auto px-6 lg:px-8">
-          <motion.div
-            className="text-center mb-16"
+          <motion.div 
+            className="max-w-3xl mx-auto mb-12 text-center"
             animate={controls}
             initial="hidden"
             variants={fadeInUp}
           >
-            <motion.h2
-              className="text-sm font-semibold text-primary-600 uppercase tracking-wide mb-2"
-              variants={fadeInUp}
-            >
+            <h2 className="text-sm font-semibold tracking-wide text-amber-600 uppercase mb-3">
               Portfólio
-            </motion.h2>
-            <motion.h3
-              className="text-4xl font-bold text-gray-900 mb-8 lg:mb-10"
-              variants={fadeInUp}
-            >
-              Projetos Realizados
-            </motion.h3>
-            <motion.p className="text-xl text-gray-600 max-w-3xl mx-auto" variants={fadeInUp}>
-              Cada projeto conta uma história única de transformação, combinando funcionalidade,
-              beleza e conforto.
-            </motion.p>
+            </h2>
+            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Projetos Selecionados
+            </h3>
+            <p className="text-gray-600 leading-relaxed">
+              Uma amostra visual de diferentes tipologias e ambientes desenvolvidos com foco em
+              funcionalidade, estética e conforto.
+            </p>
           </motion.div>
-
-          <motion.div
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12"
-            animate={controls}
-            initial="hidden"
-            variants={staggerContainer}
+          <div
+            className="grid gap-6"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gridTemplateRows: "repeat(3, 200px)",
+              gridTemplateAreas: `
+                'img1 img1 img2 img3'
+                'img4 img5 img5 img3'
+                'img4 img6 img6 img3'
+              `,
+            }}
           >
-            {projects.map((project) => (
+            {[0,1,2,3,4,5].map((idx) => (
               <motion.button
+                key={projects[idx].title}
+                onClick={() => openModal(projects[idx])}
                 type="button"
-                key={project.title}
-                className="group cursor-pointer w-full text-left"
-                onClick={() => setSelectedImage(project.image)}
-                variants={cardVariants}
-                whileHover={{
-                  y: -10,
-                  transition: { type: "spring", stiffness: 300, damping: 20 },
-                }}
-                whileTap={{ scale: 0.95 }}
+                className="group relative overflow-hidden rounded-xl bg-gray-100 shadow-sm transition-shadow duration-300 cursor-pointer"
+                style={{ gridArea: `img${idx+1}`, willChange: "transform" }}
+                onMouseEnter={() => setHoveredIdx(idx)}
+                onMouseLeave={() => setHoveredIdx(null)}
+                animate={
+                  hoveredIdx === null
+                    ? { scale: 1, zIndex: 1, boxShadow: "0 2px 8px #0001" }
+                    : hoveredIdx === idx
+                      ? { scale: 1.05, zIndex: 10, boxShadow: "0 8px 32px #0002" }
+                      : { scale: 0.95, zIndex: 1, boxShadow: "0 1px 4px #0001" }
+                }
+                transition={{ type: "spring", stiffness: 320, damping: 28 }}
               >
-                <div className="relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-2xl transition-all duration-500">
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <motion.div
-                      className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300"
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                    />
-                    <motion.div
-                      className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      initial={{ scale: 0.8 }}
-                      whileHover={{ scale: 1 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    >
-                      <div className="bg-white/90 backdrop-blur-sm rounded-full p-3">
-                        <svg
-                          className="w-6 h-6 text-primary-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                        >
-                          <title>Ver projeto</title>
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                          />
-                        </svg>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  <motion.div
-                    className="p-6"
-                    whileHover={{ backgroundColor: "rgba(249, 250, 251, 1)" }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <motion.span
-                      className="text-sm font-medium text-primary-600 mb-2 block"
-                      whileHover={{ scale: 1.05, originX: 0 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    >
-                      {project.category}
-                    </motion.span>
-                    <h4 className="text-xl font-semibold text-gray-900 mb-2">{project.title}</h4>
-                    <p className="text-gray-600 text-sm leading-relaxed">{project.description}</p>
-                  </motion.div>
-                </div>
+                <Image src={projects[idx].image} alt={projects[idx].title} fill className="object-cover" loading="lazy" />
               </motion.button>
             ))}
-          </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Modal for Image View */}
-      <AnimatePresence>
-        {selectedImage && (
-          <motion.div
-            className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            onClick={() => setSelectedImage(null)}
+      {/* Modal de Imagem Ampliada */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+          onClick={closeModal}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") closeModal();
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Imagem ampliada"
+          tabIndex={-1}
+        >
+          <button
+            type="button"
+            onClick={closeModal}
+            className="absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors z-10"
+            aria-label="Fechar"
           >
-            <motion.div
-              className="relative max-w-4xl max-h-[90vh] w-full h-full"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              onClick={(e) => e.stopPropagation()}
-            >
+            <X size={24} />
+          </button>
+          <button
+            type="button"
+            className="relative max-w-6xl w-full h-full flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+            aria-label="Imagem do projeto"
+          >
+            <div className="relative w-full h-full max-h-[90vh]">
               <Image
-                src={selectedImage}
-                alt="Projeto em destaque"
+                src={selectedImage.image}
+                alt={selectedImage.title}
                 fill
                 className="object-contain"
+                sizes="90vw"
+                priority
               />
-              <motion.button
-                type="button"
-                className="absolute top-4 right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition-colors"
-                onClick={() => setSelectedImage(null)}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                ✕
-              </motion.button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </div>
+          </button>
+        </div>
+      )}
     </>
   );
 }

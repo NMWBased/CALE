@@ -2,7 +2,7 @@ import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import HeroSection from "@/components/HeroSection";
+import HeroSlider from "@/components/HeroSlider";
 import PortfolioSection from "@/components/PortfolioSection";
 import ServicesSection from "@/components/ServicesSection";
 
@@ -11,7 +11,7 @@ export default function Home() {
     <div className="min-h-screen">
       <Header />
       <main>
-        <HeroSection />
+        <HeroSlider />
         <AboutSection />
         <ServicesSection />
         <PortfolioSection />

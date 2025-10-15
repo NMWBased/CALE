@@ -1,11 +1,15 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useAnimationFrame } from "framer-motion";
 import { Building, FileText, Home, MessageCircle, Palette } from "lucide-react";
-import { fadeInUp, staggerContainer, useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { fadeInUp, useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { useState } from "react";
 
 export default function ServicesSection() {
   const { ref, controls } = useScrollAnimation();
+  const x = useMotionValue(0);
+  const [isHovered, setIsHovered] = useState(false);
+
   const services = [
     {
       icon: Building,
@@ -38,26 +42,43 @@ export default function ServicesSection() {
     },
   ];
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-    },
+  // Duplicar os cards para criar efeito infinito
+  const duplicatedServices = [...services, ...services, ...services];
+
+  // Animação contínua que não para quando hover
+  useAnimationFrame(() => {
+    if (!isHovered) {
+      const currentX = x.get();
+      const newX = currentX - 1; // Velocidade do scroll (pixels por frame)
+      
+      // Reset quando completa um ciclo (5 cards = 1540px = 280 + 32 gap)
+      if (newX <= -1540) {
+        x.set(newX + 1540);
+      } else {
+        x.set(newX);
+      }
+    }
+  });
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
   };
 
   return (
-    <section className="py-20 bg-white" data-section="servicos" ref={ref}>
+    <section className="py-12 bg-white overflow-hidden" data-section="servicos" ref={ref}>
       <div className="container mx-auto px-6 lg:px-8">
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-12"
           animate={controls}
           initial="hidden"
           variants={fadeInUp}
         >
           <motion.h2
-            className="text-sm font-semibold text-primary-600 uppercase tracking-wide mb-2"
+            className="text-sm font-semibold text-amber-600 uppercase tracking-wide mb-2"
             variants={fadeInUp}
           >
             Serviços
@@ -70,108 +91,48 @@ export default function ServicesSection() {
           </motion.p>
         </motion.div>
 
-        <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12"
-          animate={controls}
-          initial="hidden"
-          variants={staggerContainer}
-        >
-          {services.map((service) => {
-            const IconComponent = service.icon;
-            return (
-              <motion.div
-                key={service.title}
-                className="group p-8 bg-gray-50 rounded-2xl hover:bg-white hover:shadow-2xl transition-all duration-500 border border-transparent hover:border-gray-200 cursor-pointer"
-                variants={cardVariants}
-                whileHover={{
-                  y: -10,
-                  scale: 1.02,
-                  transition: { type: "spring", stiffness: 300, damping: 20 },
-                }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <motion.div className="mb-8 lg:mb-10">
-                  <motion.div
-                    className="w-16 h-16 bg-amber-100 rounded-xl flex items-center justify-center group-hover:bg-primary-600 transition-all duration-300"
-                    whileHover={{
-                      rotate: 360,
-                      scale: 1.1,
-                    }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    <IconComponent
-                      size={32}
-                      className="text-primary-600 group-hover:text-white transition-colors duration-300"
-                    />
-                  </motion.div>
-                </motion.div>
-
-                <motion.h4
-                  className="text-xl font-semibold text-gray-900 mb-6 lg:mb-8 group-hover:text-gray-900"
-                  whileHover={{ x: 5 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                >
-                  {service.title}
-                </motion.h4>
-
-                <p className="text-gray-600 leading-relaxed">{service.description}</p>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-
-        {/* Call to Action */}
-        <motion.div
-          className="text-center mt-16"
-          animate={controls}
-          initial="hidden"
-          variants={fadeInUp}
+        {/* Carrossel Container */}
+        <section 
+          className="relative cursor-grab active:cursor-grabbing"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          aria-label="Carrossel de serviços"
         >
           <motion.div
-            className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-8 text-white relative overflow-hidden"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="flex gap-8"
+            style={{ x }}
           >
-            {/* Background Animation */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-amber-700 to-primary-600"
-              initial={{ opacity: 0 }}
-              whileHover={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-            />
+            {duplicatedServices.map((service, index) => {
+              const IconComponent = service.icon;
+              return (
+                <motion.div
+                  key={`${service.title}-${index}`}
+                  className="group min-w-[280px] max-w-[280px] h-[340px] p-6 bg-gray-50 rounded-2xl hover:bg-white hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-primary-200 cursor-pointer flex-shrink-0 flex flex-col"
+                  whileHover={{ 
+                    y: -8, 
+                    scale: 1.03,
+                    transition: { duration: 0.2 }
+                  }}
+                >
+                  <div className="mb-6">
+                    <div className="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center group-hover:bg-amber-600 transition-all duration-300">
+                      <IconComponent
+                        size={28}
+                        className="text-amber-600 group-hover:text-white transition-colors duration-300"
+                      />
+                    </div>
+                  </div>
 
-            <div className="relative z-10">
-              <motion.h4
-                className="text-2xl font-bold mb-6 lg:mb-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
-                Pronto para começar?
-              </motion.h4>
-              <motion.p
-                className="text-xl text-amber-100 mb-8 lg:mb-10"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                Fale comigo sobre o seu projeto. Analiso o que pretende, explico-lhe como funciona e
-                envio uma proposta clara.
-              </motion.p>
-              <motion.button
-                type="button"
-                className="bg-white text-primary-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl"
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                Pedir Orçamento
-              </motion.button>
-            </div>
+                  <h4 className="text-xl font-semibold text-gray-900 mb-4 group-hover:text-amber-600 transition-colors">
+                    {service.title}
+                  </h4>
+
+                  <p className="text-gray-600 text-base leading-relaxed flex-grow">{service.description}</p>
+                </motion.div>
+              );
+            })}
           </motion.div>
-        </motion.div>
+        </section>
       </div>
     </section>
   );

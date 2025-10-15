@@ -35,70 +35,48 @@ export default function Header() {
   };
 
   return (
-    <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg"
-          : "bg-white/95 backdrop-blur-sm shadow-sm"
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        isScrolled ? "bg-white/95 backdrop-blur-md shadow" : "bg-white/70 backdrop-blur"
       }`}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <nav className="container mx-auto px-4 py-4">
+      <nav className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link href="/" className="flex items-center space-x-3">
-              <motion.div
-                whileHover={{
-                  rotate: 5,
-                  scale: 1.1,
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                <Image
-                  src="/images/imgi_14_CAROL_CALE-03.png"
-                  alt="CALE Arquitetura"
-                  width={48}
-                  height={48}
-                  className="w-12 h-12 object-contain drop-shadow-md"
-                />
-              </motion.div>
-              {/* Texto removido para limpar a navbar */}
+          <div>
+            <Link href="/" className="flex items-center space-x-3 group">
+              <Image
+                src="/images/imgi_14_CAROL_CALE-03.png"
+                alt="CALE Arquitetura"
+                width={96}
+                height={96}
+                className="w-20 h-20 md:w-24 md:h-24 object-contain transition-transform duration-300 group-hover:scale-105"
+                priority
+              />
             </Link>
-          </motion.div>
+          </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-10">
-            {navItems.map((item, index) => (
-              <motion.div
+          <div className="hidden md:flex items-center space-x-1">
+            {navItems.map((item) => (
+              <button
                 key={item.href}
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25, delay: index * 0.06 }}
-                whileHover={{ y: -1 }}
+                type="button"
+                onClick={() => handleNavClick(item.href)}
+                className="relative px-4 py-2 text-base font-semibold text-gray-700 hover:text-amber-700 transition-colors duration-300 cursor-pointer group"
               >
-                <button
-                  type="button"
-                  onClick={() => handleNavClick(item.href)}
-                  className="text-gray-800 hover:text-primary-700 transition-colors duration-200 font-medium relative group"
-                >
-                  {item.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 group-hover:w-full transition-all duration-300" />
-                </button>
-              </motion.div>
+                {item.label}
+                <span className="absolute left-0 right-0 bottom-0 h-0.5 bg-amber-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+              </button>
             ))}
-            {/* Botão Pedir Orçamento removido */}
           </div>
 
           {/* Mobile Menu Button */}
-          <motion.button
+          <button
             type="button"
-            className="md:hidden p-2 text-gray-700 hover:text-primary-600 rounded-lg"
+            className="md:hidden p-2 text-gray-700 hover:text-primary-600 rounded-lg transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            aria-label="Abrir menu"
           >
             <AnimatePresence mode="wait">
               {isMenuOpen ? (
@@ -123,7 +101,7 @@ export default function Header() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.button>
+          </button>
         </div>
 
         {/* Mobile Navigation */}
@@ -170,6 +148,6 @@ export default function Header() {
           )}
         </AnimatePresence>
       </nav>
-    </motion.header>
+    </header>
   );
 }
