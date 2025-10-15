@@ -29,7 +29,7 @@ const SLIDES: Slide[] = [
     title: "Interiores com identidade",
     subtitle: "Cada espaço traduz a sua forma de viver.",
     ctaLabel: "Contactar",
-    ctaAction: "contato",
+    ctaAction: "contacto",
   },
   {
     id: 3,
@@ -64,7 +64,7 @@ export default function HeroSlider() {
   return (
     <section
       data-section="inicio"
-      className="relative h-[85vh] min-h-[540px] w-full overflow-hidden bg-black"
+      className="relative h-[95vh] min-h-[650px] w-full overflow-hidden bg-black"
     >
       {/* Slides */}
       <div className="absolute inset-0">

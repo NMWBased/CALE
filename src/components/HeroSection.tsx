@@ -191,7 +191,7 @@ export default function HeroSection() {
                 transition={{ duration: 0.2 }}
               >
                 <Link
-                  href="#contato"
+                  href="#contacto"
                   className="border-2 border-primary-600 text-primary-600 bg-white/80 backdrop-blur-sm px-8 py-4 rounded-full hover:bg-primary-600 hover:text-white transition-all duration-300 font-semibold text-lg text-center inline-block"
                 >
                   Falar Comigo

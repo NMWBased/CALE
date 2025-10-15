@@ -26,7 +26,7 @@ export default function Header() {
     { href: "sobre", label: "Sobre" },
     { href: "servicos", label: "Serviços" },
     { href: "portfolio", label: "Portfólio" },
-    { href: "contato", label: "Contato" },
+    { href: "contacto", label: "Contacto" },
   ];
 
   const handleNavClick = (sectionId: string) => {

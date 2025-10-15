@@ -14,7 +14,7 @@ export default function ContactSection() {
   const { ref, controls } = useScrollAnimation();
   
   return (
-    <section className="py-20 bg-white" data-section="contato" ref={ref}>
+    <section className="py-20 bg-white" data-section="contacto" ref={ref}>
       <div className="container mx-auto px-6 lg:px-8">
         {/* Primeira Fase: Fale Comigo - Formulário Centralizado */}
         <motion.div 
