@@ -49,7 +49,7 @@ export default function ServicesSection() {
   useAnimationFrame(() => {
     if (!isHovered) {
       const currentX = x.get();
-      const newX = currentX - 1; // Velocidade do scroll (pixels por frame)
+      const newX = currentX - 0.5; // Velocidade do scroll (pixels por frame) - reduzida para metade
       
       // Reset quando completa um ciclo (5 cards = 1540px = 280 + 32 gap)
       if (newX <= -1540) {
