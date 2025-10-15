@@ -12,7 +12,7 @@ export default function AboutSection() {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Text Content */}
           <motion.div
-            className="space-y-6"
+            className="space-y-6 text-center lg:text-left flex flex-col items-center lg:items-start"
             animate={controls}
             initial="hidden"
             variants={fadeInLeft}
@@ -48,7 +48,7 @@ export default function AboutSection() {
             </motion.p>
 
             <motion.div
-              className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mt-8"
+              className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 mt-8 text-left mx-auto lg:mx-0 max-w-md w-full"
               variants={fadeInUp}
             >
               <h4 className="text-xl font-semibold text-gray-900 mb-5">
