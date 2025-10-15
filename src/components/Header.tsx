@@ -29,9 +29,13 @@ export default function Header() {
   { href: "contacto", label: "Contacto", icon: Mail },
   ];
 
-  const handleNavClick = (sectionId: string) => {
-    scrollToSection(sectionId);
+  const handleNavClick = (e: React.MouseEvent, sectionId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
     setIsMenuOpen(false);
+    setTimeout(() => {
+      scrollToSection(sectionId);
+    }, 300);
   };
 
   return (
@@ -62,7 +66,7 @@ export default function Header() {
               <button
                 key={item.href}
                 type="button"
-                onClick={() => handleNavClick(item.href)}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className="relative px-4 py-2 text-lg font-semibold text-gray-700 hover:text-amber-700 transition-colors duration-500 cursor-pointer group"
               >
                 {item.label}
@@ -108,14 +112,14 @@ export default function Header() {
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
-              className="md:hidden mt-4 pb-4 border-t border-gray-200"
+              className="md:hidden mt-4 pb-4 border-t border-gray-200 overflow-hidden"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
             >
               <motion.div
-                className="flex flex-col space-y-3 pt-4"
+                className="flex flex-col space-y-3 pt-4 px-2"
                 variants={{
                   visible: {
                     transition: {
@@ -132,15 +136,15 @@ export default function Header() {
                     <motion.button
                       key={item.href}
                       type="button"
-                      onClick={() => handleNavClick(item.href)}
+                      onClick={(e) => handleNavClick(e, item.href)}
                       variants={{
-                        hidden: { opacity: 0, x: -20 },
+                        hidden: { opacity: 0, x: -10 },
                         visible: { opacity: 1, x: 0 },
                       }}
-                      className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium py-2 w-full text-left flex items-center gap-2"
+                      className="text-gray-700 hover:text-primary-600 transition-colors duration-200 font-medium py-2 w-full text-left flex items-center gap-3"
                     >
-                      <IconComponent size={22} className="text-amber-600" />
-                      {item.label}
+                      <IconComponent size={20} className="text-amber-600 flex-shrink-0" />
+                      <span className="flex-1">{item.label}</span>
                     </motion.button>
                   );
                 })}
