@@ -45,7 +45,18 @@ const AUTO_DELAY = 6500; // ms
 
 export default function HeroSlider() {
   const [index, setIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const { scrollToSection } = useSmoothScroll();
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
@@ -83,7 +94,15 @@ export default function HeroSlider() {
                   loop
                   muted
                   playsInline
+                  preload="metadata"
                   className="object-cover w-full h-full absolute inset-0"
+                  style={{
+                    transform: isMobile ? 'scale(1.1)' : 'scale(1)',
+                    willChange: 'transform, opacity',
+                  }}
+                  // Optimizations for smoother playback
+                  disablePictureInPicture
+                  controlsList="nodownload nofullscreen noremoteplayback"
                 />
                 <div className="absolute inset-0 bg-black/40" />
               </motion.div>

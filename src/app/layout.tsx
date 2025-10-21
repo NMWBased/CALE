@@ -29,11 +29,11 @@ export const metadata: Metadata = {
   creator: "CALE Arquitetura",
   publisher: "CALE Arquitetura",
   // Define base URL para gerar links absolutos (OpenGraph/Twitter)
-  metadataBase: new URL("https://cale-arquitetura.com"),
+  metadataBase: new URL("https://cale-three.vercel.app/"),
   openGraph: {
     type: "website",
     locale: "pt_PT",
-    url: "https://cale-arquitetura.com",
+    url: "https://cale-three.vercel.app/",
     siteName: "CALE Arquitetura",
     title: "CALE Arquitetura | Espaços com funcionalidade, alma e conforto",
     description:
@@ -52,6 +52,8 @@ export const metadata: Metadata = {
     title: "CALE Arquitetura | Espaços com funcionalidade, alma e conforto",
     description: "Atelier de arquitetura focado em criar projetos únicos.",
     images: ["/images/imgi_18_006 Casa Área Externa_edited.png"],
+    site: "https://cale-three.vercel.app/",
+    creator: "CALE Arquitetura",
   },
 };
 
