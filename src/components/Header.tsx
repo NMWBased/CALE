@@ -44,24 +44,28 @@ export default function Header() {
         isScrolled ? "bg-white/95 backdrop-blur-md shadow" : "bg-white/70 backdrop-blur"
       }`}
     >
-  <nav className="container mx-auto px-4 py-0">
-        <div className="flex items-center justify-between">
+  <nav className="container mx-auto px-4 py-0 max-w-full">
+        <div className="flex items-center justify-between w-full">
           {/* Logo */}
-          <div>
+          <div className="flex-shrink-0">
             <Link href="/" className="flex items-center space-x-3 group">
-              <Image
-                src="/images/imgi_14_CAROL_CALE-03.png"
-                alt="CALE Arquitetura"
-                width={112}
-                height={112}
-                className="w-24 h-24 md:w-28 md:h-28 object-contain transition-transform duration-300 group-hover:scale-105"
-                priority
-              />
+              <div className="w-24 h-24 md:w-28 md:h-28 relative flex-shrink-0">
+                <Image
+                  src="/images/imgi_14_CAROL_CALE-03.png"
+                  alt="CALE Arquitetura"
+                  width={112}
+                  height={112}
+                  className="object-contain transition-transform duration-300 group-hover:scale-105"
+                  priority
+                  sizes="(max-width: 768px) 96px, 112px"
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </div>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          <div className="hidden md:flex items-center space-x-1 flex-shrink-0">
             {navItems.map((item) => (
               <button
                 key={item.href}
@@ -78,7 +82,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             type="button"
-            className="md:hidden p-2 text-gray-700 hover:text-primary-600 rounded-lg transition-colors"
+            className="md:hidden p-2 text-gray-700 hover:text-primary-600 rounded-lg transition-colors flex-shrink-0"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Abrir menu"
           >
